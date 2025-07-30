@@ -1,0 +1,118 @@
+// List of case scenarios with suspects and correct answers
+const cases = [
+  {
+    case: "A passenger flying from Colombia with a backpack and chewing gum constantly.",
+    suspects: [
+      "Passenger 1: From Colombia, wearing sunglasses indoors.",
+      "Passenger 2: From Canada, has no luggage.",
+      "Passenger 3: From Colombia, chewing gum constantly and sweating.",
+    ],
+    answer: 2 // index of the correct suspect
+  },
+  {
+    case: "A man traveling from Mexico with tightly packed shampoo bottles.",
+    suspects: [
+      "Passenger 1: From Mexico, carrying loose clothes.",
+      "Passenger 2: From Mexico, with heavy shampoo bottles sealed with tape.",
+      "Passenger 3: From Italy, carrying books.",
+    ],
+    answer: 1
+  },
+  {
+    case: "A woman acting nervous and avoiding eye contact, flying from Peru.",
+    suspects: [
+      "Passenger 1: From USA, calm and cooperative.",
+      "Passenger 2: From Peru, constantly avoiding eye contact and fidgeting.",
+      "Passenger 3: From Peru, chatting casually.",
+    ],
+    answer: 1
+  },
+  {
+    case: "Passenger from Thailand with boxes labeled 'tea' but sealed tightly.",
+    suspects: [
+      "Passenger 1: From Thailand, carrying tightly sealed 'tea' boxes.",
+      "Passenger 2: From Thailand, carrying a tea set.",
+      "Passenger 3: From India, carrying tea samples.",
+    ],
+    answer: 0
+  }
+];
+
+let currentCase = 0;
+
+// Function to load a case
+function loadCase(index) {
+  const caseData = cases[index];
+  document.getElementById("case-description").innerText = caseData.case;
+
+  const suspectList = document.getElementById("suspect-list");
+  suspectList.innerHTML = ""; // clear previous suspects
+
+  document.getElementById("result").innerText = "";
+  document.getElementById("nextBtn").style.display = "none";
+
+  caseData.suspects.forEach((suspect, i) => {
+    const card = document.createElement("div");
+    card.classList.add("suspect-card");
+    card.innerText = suspect;
+    card.addEventListener("click", () => selectSuspect(card, i));
+    suspectList.appendChild(card);
+  });
+}
+
+// Handle suspect selection
+function selectSuspect(card, index) {
+  const suspectCards = document.querySelectorAll(".suspect-card");
+  const correctIndex = cases[currentCase].answer;
+
+  // Disable further selection
+  suspectCards.forEach((c, i) => {
+    c.style.pointerEvents = "none";
+    if (i === correctIndex) {
+      c.classList.add("correct");
+    }
+  });
+
+  if (index === correctIndex) {
+    card.classList.add("correct");
+    document.getElementById("result").innerText = "✅ Correct! You caught the trafficker.";
+  } else {
+    card.classList.add("wrong");
+    document.getElementById("result").innerText = "❌ Wrong! That wasn't the trafficker.";
+  }
+
+  // Show "Next" button
+  document.getElementById("nextBtn").style.display = "inline-block";
+}
+
+// Handle next case
+function nextCase() {
+  currentCase++;
+  if (currentCase < cases.length) {
+    loadCase(currentCase);
+  } else {
+    document.querySelector(".game-box").innerHTML = `
+      <h1>Game Over 🎉</h1>
+      <p>You’ve completed all cases!</p>
+      <button onclick="restartGame()">Play Again</button>
+    `;
+  }
+}
+
+// Restart the game
+function restartGame() {
+  currentCase = 0;
+  document.querySelector(".game-box").innerHTML = `
+    <h1>Drug Trafficker Detection Game</h1>
+    <p id="case-description"></p>
+    <div id="suspect-list" class="suspect-list"></div>
+    <p id="result"></p>
+    <button id="nextBtn" onclick="nextCase()">Next Case</button>
+  `;
+  loadCase(currentCase);
+}
+
+// Initialize game
+window.onload = () => {
+  loadCase(currentCase);
+};
