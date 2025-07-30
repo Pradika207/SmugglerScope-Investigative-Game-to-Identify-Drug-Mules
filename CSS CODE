@@ -1,0 +1,102 @@
+/* Reset + Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #e0f7fa, #f1f8e9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.game-box {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+h1 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+#case-description {
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  color: #555;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 10px;
+}
+
+/* Suspect Card Styles */
+.suspect-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.suspect-card {
+  padding: 15px 20px;
+  background: #e3f2fd;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #333;
+  border: 2px solid transparent;
+}
+
+.suspect-card:hover {
+  transform: scale(1.02);
+  background-color: #bbdefb;
+}
+
+/* Correct & Wrong Selection */
+.correct {
+  background-color: #c8e6c9 !important;
+  border: 2px solid #2e7d32;
+  color: #2e7d32;
+}
+
+.wrong {
+  background-color: #ffcdd2 !important;
+  border: 2px solid #c62828;
+  color: #c62828;
+}
+
+/* Result Text */
+#result {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* Next Button */
+#nextBtn {
+  padding: 10px 25px;
+  font-size: 1rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  display: none; /* Shown only after selection */
+}
+
+#nextBtn:hover {
+  background-color: #388e3c;
+}
