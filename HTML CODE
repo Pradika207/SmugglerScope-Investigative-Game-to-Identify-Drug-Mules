@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Find the Drug Trafficker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f8ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .game-box {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+    }
+    h1 {
+      color: #1e88e5;
+    }
+    .suspect-list {
+      margin-top: 20px;
+    }
+    .suspect-card {
+      background: #e3f2fd;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .suspect-card:hover {
+      background: #bbdefb;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    #nextBtn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: #1e88e5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      display: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-box">
+    <h1>🕵️ Find the Drug Trafficker!</h1>
+    <div id="case-description">Loading case...</div>
+
+    <div id="suspects" class="suspect-list">
+      <!-- Suspects will appear here -->
+    </div>
+
+    <div id="result"></div>
+    <button id="nextBtn" onclick="nextCase()">Next Case</button>
+  </div>
+
+  <script>
+    const cases = [
+      {
+        description: "Three passengers were stopped at the airport. One of them is smuggling drugs.",
+        suspects: [
+          { name: "Alice", from: "USA", carrying: "Medicine box", drug: "Paracetamol" },
+          { name: "Ravi", from: "Colombia", carrying: "Powder bag", drug: "Cocaine" },
+          { name: "Liu", from: "China", carrying: "Painkillers", drug: "Ibuprofen" },
+        ],
+        answer: "Ravi"
+      },
+      {
+        description: "Customs stopped a container from the seaport. Who is suspicious?",
+        suspects: [
+          { name: "Fatima", from: "India", carrying: "Tea", drug: "None" },
+          { name: "Carlos", from: "Mexico", carrying: "Packets of white powder", drug: "Meth" },
+          { name: "John", from: "UK", carrying: "First Aid Kit", drug: "Aspirin" },
+        ],
+        answer: "Carlos"
+      },
+      {
+        description: "Three suitcases were scanned. One had hidden drugs.",
+        suspects: [
+          { name: "Emily", from: "Canada", carrying: "Books", drug: "None" },
+          { name: "Ajay", from: "Sri Lanka", carrying: "Liquid bottle", drug: "Cough Syrup" },
+          { name: "Leo", from: "Afghanistan", carrying: "Hidden Compartment", drug: "Heroin" },
+        ],
+        answer: "Leo"
+      }
+    ];
+
+    let currentCase = 0;
+
+    function loadCase() {
+      const caseData = cases[currentCase];
+      document.getElementById("case-description").innerText = `📝 Case ${currentCase + 1}: ${caseData.description}`;
+
+      const suspectsDiv = document.getElementById("suspects");
+      suspectsDiv.innerHTML = "";
+
+      caseData.suspects.forEach(suspect => {
+        const card = document.createElement("div");
+        card.className = "suspect-card";
+        card.innerHTML = `
+          <strong>${suspect.name}</strong><br>
+          From: ${suspect.from}<br>
+          Carrying: ${suspect.carrying}<br>
+          Found Drug: ${suspect.drug}
+        `;
+        card.onclick = () => checkAnswer(suspect.name);
+        suspectsDiv.appendChild(card);
+      });
+
+      document.getElementById("result").innerText = "";
+      document.getElementById("nextBtn").style.display = "none";
+    }
+
+    function checkAnswer(selectedName) {
+      const correct = cases[currentCase].answer;
+      const resultDiv = document.getElementById("result");
+
+      if (selectedName === correct) {
+        resultDiv.innerHTML = "✅ Correct! You caught the trafficker!";
+      } else {
+        resultDiv.innerHTML = `❌ Wrong! The correct answer was <b>${correct}</b>.`;
+      }
+
+      document.querySelectorAll(".suspect-card").forEach(card => {
+        card.onclick = null;
+        card.style.cursor = "not-allowed";
+      });
+
+      document.getElementById("nextBtn").style.display = "inline-block";
+    }
+
+    function nextCase() {
+      currentCase++;
+      if (currentCase >= cases.length) {
+        document.getElementById("case-description").innerText = "🎉 Game Over!";
+        document.getElementById("suspects").innerHTML = "";
+        document.getElementById("result").innerHTML = "Thanks for playing!";
+        document.getElementById("nextBtn").style.display = "none";
+      } else {
+        loadCase();
+      }
+    }
+
+    // Start the game
+    loadCase();
+  </script>
+</body>
+</html>
